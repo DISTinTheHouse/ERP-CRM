@@ -1,4 +1,4 @@
-# ERP/CRM en Django - Plan de Desarrollo por Etapas
+# ERP/CRM - Plan de Desarrollo por Etapas
 
 Este documento describe la estrategia de desarrollo modular de un sistema ERP/CRM. Está diseñado para escalar en fases, validando la lógica y el modelo de datos progresivamente, priorizando la operación diaria antes de integrar funciones fiscales o contables.
 
