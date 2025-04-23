@@ -116,7 +116,7 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ---
 
-> Este roadmap está diseñado para implementar un sistema ERP en etapas seguras, escalables y enfocadas a la operación real de una empresa industrial/comercial. Cada módulo puede tener su propia app dentro de Django para una arquitectura mantenible.
+> Este roadmap está diseñado para implementar un sistema ERP en etapas seguras, escalables y enfocadas a la operación real de una empresa industrial/comercial. Cada módulo puede tener su propia app para una arquitectura mantenible.
 
 ---
 
