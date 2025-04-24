@@ -122,7 +122,7 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 **Desarrollado por el equipo de sistemas — Abril 2025.**
 
-<<<<<<< HEAD
+
 =======
 SIMAC = Sistema Integral de Maquila y Control
 
@@ -140,4 +140,4 @@ Vender, sublicenciar o explotar comercialmente este formato de forma parcial o t
 
 El uso no autorizado de este software podrá ser sancionado conforme a las leyes locales e internacionales sobre propiedad intelectual y uso indebido de software.
 
->>>>>>> 1b2bb52 (Primer push del sistema ERP/CRM SIMAC con control de inventarios)
+
