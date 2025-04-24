@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-lg font-bold">Movimientos</h2>
+<table>
+  <tr>
+    <th>Fecha</th><th>Producto</th><th>Tipo</th><th>Cantidad</th><th>Almacén</th>
+  </tr>
+  {% for m in movimientos %}
+  <tr>
+    <td>{{ m.fecha }}</td>
+    <td>{{ m.producto }}</td>
+    <td>{{ m.tipo }}</td>
+    <td>{{ m.cantidad }}</td>
+    <td>{{ m.almacen }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

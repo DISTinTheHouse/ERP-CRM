@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container py-4">
+
+      <!-- Mensajes flash -->
+      <div id="alert-container" style="position: fixed; top: 90px; left: 50%; transform: translateX(-50%); z-index: 1055; width: auto;">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Lista de Almacenes</h3>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoAlmacenModal">Nuevo Almacén</button>
+      </div>
+    
+      {% if almacenes %}
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Activo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for a in almacenes %}
+              <tr>
+                <td>{{ a.codigo }}</td>
+                <td>{{ a.nombre }}</td>
+                <td>{{ a.descripcion }}</td>
+                <td>
+                  {% if a.activo %}
+                    <span class="badge bg-success">Sí</span>
+                  {% else %}
+                    <span class="badge bg-danger">No</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="alert alert-warning">No hay almacenes registrados.</div>
+      {% endif %}
+    
+      <!-- Modal para nuevo almacén -->
+      <div class="modal fade" id="nuevoAlmacenModal" tabindex="-1" aria-labelledby="nuevoAlmacenModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="nuevoAlmacenModalLabel">Agregar Nuevo Almacén</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form method="POST" action="">
+              {% csrf_token %}
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="codigo" class="form-label">Código</label>
+                  <input type="text" class="form-control" id="codigo" name="codigo" required>
+                </div>
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="mb-3">
+                  <label for="descripcion" class="form-label">Descripción</label>
+                  <textarea class="form-control" id="descripcion" name="descripcion" rows="2"></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        });
+      }, 4000); // Desaparece a los 4 segundos
+    </script>
+{% endblock %}

@@ -122,3 +122,22 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 **Desarrollado por el equipo de sistemas — Abril 2025.**
 
+<<<<<<< HEAD
+=======
+SIMAC = Sistema Integral de Maquila y Control
+
+⚠️ Licencia y uso restringido
+Este sistema ERP/CRM, denominado SIMAC (Sistema Integral de Maquila y Control), ha sido desarrollado como una solución personalizada para la gestión de operaciones industriales y comerciales.
+
+Todos los derechos están reservados. Este software no es de uso libre ni de código abierto. La estructura, funcionalidad y modelo de datos aquí implementados son propiedad intelectual del equipo desarrollador.
+
+🚫 Queda estrictamente prohibido:
+Clonar, replicar o redistribuir este sistema sin autorización escrita del propietario.
+
+Usar este código como base para otros proyectos ERP o CRM sin licencia expresa.
+
+Vender, sublicenciar o explotar comercialmente este formato de forma parcial o total.
+
+El uso no autorizado de este software podrá ser sancionado conforme a las leyes locales e internacionales sobre propiedad intelectual y uso indebido de software.
+
+>>>>>>> 1b2bb52 (Primer push del sistema ERP/CRM SIMAC con control de inventarios)

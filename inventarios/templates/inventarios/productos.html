@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+  <!-- Mensajes flash -->
+  <div id="alert-container" style="position: fixed; top: 90px; left: 50%; transform: translateX(-50%); z-index: 1055; width: auto;">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Lista de Productos</h3>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#gestionarCategoriasModal">
+        <i class="bx bx-category"></i> Categorías
+      </button>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoProductoModal">
+        <i class="bx bx-plus"></i> Nuevo Producto
+      </button>
+    </div>
+  </div>
+
+  <div class="mb-3 d-flex align-items-center gap-2">
+    <label for="tipoFiltro" class="form-label mb-0 fw-semibold">Filtrar por tipo:</label>
+    <select id="tipoFiltro" class="form-select form-select-sm w-auto" onchange="filtrarTipo(this.value)">
+      <option value="">Todos</option>
+      <option value="MP">Materia Prima</option>
+      <option value="PT">Producto Terminado</option>
+      <option value="SV">Servicio</option>
+    </select>
+  </div>
+
+  <div id="contador-productos" class="mb-3 text-muted fw-bold">
+    Mostrando <span id="cantidad-productos">0</span> producto(s)
+  </div>
+
+  {% if productos %}
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered align-middle text-center" id="tabla-productos">
+        <thead class="table-light">
+          <tr>
+            <th>SKU</th>
+            <th>Descripción</th>
+            <th>Unidad</th>
+            <th>Tipo</th>
+            <th>Categoría</th>
+            <th><i class="bx bx-bar-chart-alt-2"></i> Stock</th> <!-- NUEVA COLUMNA -->
+            <th>Activo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in productos %}
+          <tr>
+            <td>{{ p.sku }}</td>
+            <td>{{ p.descripcion }}</td>
+            <td>{{ p.unidad_medida }}</td>
+            <td class="tipo" data-tipo="{{ p.tipo }}">
+              {% if p.tipo == "MP" %}
+                <i class="bx bx-cog text-primary me-1"></i> Materia Prima
+              {% elif p.tipo == "PT" %}
+                <i class="bx bx-package text-success me-1"></i> Producto Terminado
+              {% elif p.tipo == "SV" %}
+                <i class="bx bx-wrench text-warning me-1"></i> Servicio
+              {% else %}
+                <i class="bx bx-question-mark text-muted me-1"></i> Desconocido
+              {% endif %}
+            </td>
+            <td>
+              {% if p.categoria %}
+                <span class="badge bg-info">{{ p.categoria.nombre }}</span>
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+            <td>
+              <span class="fw-bold">{{ p.stock_actual|default:"0" }}</span> <!-- MOSTRAR STOCK -->
+            </td>
+            <td>
+              {% if p.activo %}
+                <span class="badge bg-success">Sí</span>
+              {% else %}
+                <span class="badge bg-danger">No</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
+  {% else %}
+    <div class="alert alert-warning">No hay productos registrados.</div>
+  {% endif %}
+
+  <!-- Modal nuevo producto -->
+  <div class="modal fade" id="nuevoProductoModal" tabindex="-1" aria-labelledby="nuevoProductoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" action="">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h5 class="modal-title" id="nuevoProductoModalLabel">Agregar Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="sku" class="form-label">SKU</label>
+              <input type="text" class="form-control" id="sku" name="sku" required>
+            </div>
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <textarea class="form-control" id="descripcion" name="descripcion" rows="2"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="unidad_medida" class="form-label">Unidad de Medida</label>
+              <input type="text" class="form-control" id="unidad_medida" name="unidad_medida">
+            </div>
+            <div class="mb-3">
+              <label for="tipo" class="form-label">Tipo</label>
+              <select class="form-select" id="tipo" name="tipo" required>
+                <option value="">Seleccione...</option>
+                <option value="MP">Materia Prima</option>
+                <option value="PT">Producto Terminado</option>
+                <option value="SV">Servicio</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="categoria" class="form-label">Categoría</label>
+              <select class="form-select" id="categoria" name="categoria">
+                <option value="">Sin categoría</option>
+                {% for cat in categorias %}
+                  <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal gestionar categorías -->
+<div class="modal fade" id="gestionarCategoriasModal" tabindex="-1" aria-labelledby="gestionarCategoriasLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{% url 'productos' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="gestionarCategoriasLabel">Agregar Categoría</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="nombreCategoria" class="form-label">Nombre de categoría</label>
+            <input type="text" class="form-control" id="nombreCategoria" name="nombre_categoria" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.alert').forEach(alert => {
+      const bsAlert = new bootstrap.Alert(alert);
+      bsAlert.close();
+    });
+  }, 4000);
+
+  function filtrarTipo(tipo) {
+    const rows = document.querySelectorAll('#tabla-productos tbody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const tipoCelda = row.querySelector('.tipo').dataset.tipo;
+      const match = !tipo || tipoCelda === tipo;
+      row.style.display = match ? '' : 'none';
+      if (match) visibleCount++;
+    });
+
+    document.getElementById('cantidad-productos').textContent = visibleCount;
+    localStorage.setItem('filtroTipoProducto', tipo);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedTipo = localStorage.getItem('filtroTipoProducto') || '';
+    document.getElementById('tipoFiltro').value = savedTipo;
+    filtrarTipo(savedTipo);
+  });
+</script>
+{% endblock %}

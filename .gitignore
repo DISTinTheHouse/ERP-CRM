@@ -1,0 +1,44 @@
+# Entorno virtual
+venv/
+.env/
+
+# Archivos de configuración de entorno local
+*.env
+*.local
+*.log
+
+# Archivos de Python bytecode
+# __pycache__/
+# *.py[cod]
+# *$py.class
+
+# Archivos de bases de datos locales
+# *.sqlite3
+# db.sqlite3
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de compilación / distribución
+*.bak
+*.tmp
+*.swp
+
+# Archivos de migraciones vacías
+# **/migrations/*.pyc
+# **/migrations/__pycache__/
+# **/migrations/*.py
+
+
+# Archivos generados por herramientas externas
+*.pdf
+*.xlsx
+*.xls
+*.csv
+
+
+# Archivos de ejecución
+# *.exe
+# *.sh
+# *.bat
