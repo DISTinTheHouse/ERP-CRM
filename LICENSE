@@ -1,22 +1,14 @@
-MIT License
+⚠️ LICENCIA Y USO RESTRINGIDO
 
-Copyright (c) 2025 G'
+Este sistema ERP/CRM, denominado SIMAC (Sistema Integral de Maquila y Control), ha sido desarrollado como una solución personalizada para la gestión de operaciones industriales y comerciales.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Todos los derechos están reservados. Este software no es de uso libre ni de código abierto. La estructura, funcionalidad y modelo de datos aquí implementados son propiedad intelectual del equipo desarrollador.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+🚫 Queda estrictamente prohibido:
+- Clonar, replicar o redistribuir este sistema sin autorización escrita del propietario.
+- Usar este código como base para otros proyectos ERP o CRM sin licencia expresa.
+- Vender, sublicenciar o explotar comercialmente este formato de forma parcial o total.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+El uso no autorizado de este software podrá ser sancionado conforme a las leyes locales e internacionales sobre propiedad intelectual y uso indebido de software.
 
+Si deseas obtener una licencia válida o colaborar con el desarrollo de esta solución, contáctanos directamente.

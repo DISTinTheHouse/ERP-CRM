@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3 class="mb-4">Resultados de búsqueda para: <strong>"{{ query }}"</strong></h3>
+
+  {% if resultados_productos or resultados_movimientos or resultados_almacenes %}
+    <!-- Productos -->
+    {% if resultados_productos %}
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          Productos encontrados
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for producto in resultados_productos %}
+            <li class="list-group-item">
+              <strong>{{ producto.descripcion }}</strong> 
+              <br>
+              <small>SKU: {{ producto.sku }} | Clasificación: {{ producto.clasificacion }} | Tipo: {{ producto.tipo }}</small>
+              <div class="mt-2">
+                <a href="{% url 'producto_detalle' producto.id %}" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Movimientos -->
+    {% if resultados_movimientos %}
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          Movimientos encontrados
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for movimiento in resultados_movimientos %}
+            <li class="list-group-item">
+              {{ movimiento.descripcion }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Almacenes -->
+    {% if resultados_almacenes %}
+      <div class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+          Almacenes encontrados
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for almacen in resultados_almacenes %}
+            <li class="list-group-item">
+              {{ almacen.nombre }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div class="alert alert-info">
+      No se encontraron resultados para tu búsqueda. 😕
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -3,6 +3,12 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='inventario_index'),
+    
+    #buscardor
+    path('buscar/', views.buscar_global, name='buscar_global'),
+
+    path('producto/<int:producto_id>/', views.producto_detalle, name='producto_detalle'),
+
     # sección de almacenes
     path('almacenes/', views.almacenes, name='almacenes'),
 

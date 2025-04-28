@@ -1,12 +1,51 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Producto, Movimiento, Almacen, CategoriaProducto
+from django.db.models import Sum
 import pandas as pd
 from django.core.files.storage import FileSystemStorage
+from django.db.models import Q
 
 
 def index(request):
     return render(request, 'inventarios/index.html')
+
+#buscador
+def buscar_global(request):
+    query = request.GET.get('q', '')
+
+    if not query:
+        return redirect('inventario_index')
+    # Buscar en productos
+    resultados_productos = Producto.objects.filter(
+            Q(descripcion__icontains=query) |
+            Q(sku__icontains=query) |
+            Q(clasificacion__icontains=query) |
+            Q(tipo__icontains=query)
+    )
+
+    # Buscar en movimientos
+    resultados_movimientos = Movimiento.objects.filter(
+            Q(referencia__icontains=query) |
+            Q(observaciones__icontains=query) |
+            Q(producto__descripcion__icontains=query)
+    )
+
+    # Buscar en almacenes
+    resultados_almacenes = Almacen.objects.filter(
+            Q(nombre__icontains=query) |
+            Q(descripcion__icontains=query)
+    )
+
+
+    context = {
+        'query': query,
+        'resultados_productos': resultados_productos,
+        'resultados_movimientos': resultados_movimientos,
+        'resultados_almacenes': resultados_almacenes,
+    }
+    return render(request, 'inventarios/buscar_resultados.html', context)
+
 
 # sección de inventarios
 def almacenes(request):
@@ -195,8 +234,6 @@ def lista_movimientos(request):
     return render(request, 'inventarios/movimientos.html', {'movimientos': movimientos})
 
 
-
-
 def producto_detalle(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     almacenes = Almacen.objects.all()
@@ -207,7 +244,7 @@ def producto_detalle(request, producto_id):
         Movimiento.objects
         .filter(producto=producto)
         .values('almacen__codigo', 'almacen__nombre')
-        .annotate(total=models.Sum('cantidad'))
+        .annotate(total=Sum('cantidad')) 
         .order_by('almacen__codigo')
     )
 

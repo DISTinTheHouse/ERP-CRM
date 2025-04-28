@@ -269,29 +269,18 @@
                 <div class="navbar-nav align-items-center">
                   <div class="nav-item d-flex align-items-center">
                     <i class="bx bx-search bx-md"></i>
-                    <input
-                      type="text"
-                      id="search-input"
-                      class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                      placeholder="Buscar..."
-                      aria-label="Search..." />
+                    <form method="GET" action="{% url 'buscar_global' %}" class="d-flex align-items-center">
+                      <input
+                        type="text"
+                        id="search-input"
+                        name="q"
+                        class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                        placeholder="Buscar..."
+                        aria-label="Buscar..." />
+                    </form>
                   </div>
                 </div>
                 <!-- /Search -->
-        
-                <script>
-                  document.getElementById("search-input").addEventListener("input", function () {
-                      const searchValue = this.value.toLowerCase();
-                      const table = document.getElementById("tabla-pedidos");
-                      const rows = table.tBodies[0].rows;
-                  
-                      for (let i = 0; i < rows.length; i++) {
-                          const rowText = rows[i].innerText.toLowerCase();
-                          rows[i].style.display = rowText.includes(searchValue) ? "" : "none";
-                      }
-                  });
-                  </script>
-                  
         
                 <ul class="navbar-nav flex-row align-items-center ms-auto">
                   <!-- Place this tag where you want the button to render. -->
