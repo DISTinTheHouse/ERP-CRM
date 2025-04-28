@@ -44,7 +44,6 @@ class Producto(models.Model):
         return f"{self.sku} - {self.descripcion or 'Sin descripción'}"
 
 
-
 # Ubicación dentro de almacén (rack, pasillo, bin, etc.)
 class Ubicacion(models.Model):
     id = models.BigAutoField(primary_key=True)

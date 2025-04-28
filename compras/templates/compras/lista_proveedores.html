@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+  
+  <!-- Mensajes de éxito o error -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Botón para abrir el modal -->
+  <div class="d-flex justify-content-between my-4">
+    <h3 class="fw-bold">Lista de Proveedores</h3>
+    <button type="button" class="btn btn-primary rounded-5" data-bs-toggle="modal" data-bs-target="#nuevoProveedorModal">
+      <i class="bx bx-plus"></i> Nuevo Proveedor
+    </button>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input type="text" id="searchInput" class="form-control rounded-5 shadow-sm" placeholder="Buscar proveedor...">
+    </div>
+  </div>  
+
+  <!-- Tabla de Proveedores -->
+  <div class="table-responsive">
+    <table class="table table-hover align-middle rounded-4 overflow-hidden shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th onclick="sortTable(0)">Nombre</th>
+          <th onclick="sortTable(1)">RFC</th>
+          <th onclick="sortTable(2)">Contacto</th>
+          <th onclick="sortTable(3)">Teléfono</th>
+          <th onclick="sortTable(4)">Email</th>
+          <th>Activo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for proveedor in proveedores %}
+          <tr>
+            <td>{{ proveedor.nombre }}</td>
+            <td>{{ proveedor.rfc|default:"-" }}</td>
+            <td>{{ proveedor.contacto|default:"-" }}</td>
+            <td>{{ proveedor.telefono|default:"-" }}</td>
+            <td>{{ proveedor.email|default:"-" }}</td>
+            <td>{% if proveedor.activo %}✔️{% else %}❌{% endif %}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" class="text-center text-muted">No hay proveedores registrados.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Proveedor -->
+<div class="modal fade" id="nuevoProveedorModal" tabindex="-1" aria-labelledby="nuevoProveedorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-5 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nuevoProveedorModalLabel">Agregar Nuevo Proveedor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-floating mb-3">
+            <input type="text" name="nombre" class="form-control" id="nombreInput" placeholder="Nombre" required>
+            <label for="nombreInput">Nombre</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="rfc" class="form-control" id="rfcInput" placeholder="RFC">
+            <label for="rfcInput">RFC</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="contacto" class="form-control" id="contactoInput" placeholder="Contacto">
+            <label for="contactoInput">Contacto</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="telefono" class="form-control" id="telefonoInput" placeholder="Teléfono">
+            <label for="telefonoInput">Teléfono</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" name="email" class="form-control" id="emailInput" placeholder="Email">
+            <label for="emailInput">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea name="direccion" class="form-control" id="direccionInput" placeholder="Dirección" style="height: 100px;"></textarea>
+            <label for="direccionInput">Dirección</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" name="condiciones_pago" class="form-control" id="condicionesPagoInput" placeholder="Condiciones de Pago">
+            <label for="condicionesPagoInput">Condiciones de Pago</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger rounded-5 me-2" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success rounded-5">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Buscador dinámico
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('tbody tr');
+  
+    searchInput.addEventListener('keyup', function() {
+      const searchTerm = this.value.toLowerCase();
+  
+      tableRows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+      });
+    });
+  });
+  
+  // Función para ordenar la tabla
+  function sortTable(columnIndex) {
+    const table = document.querySelector('table');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+  
+    const isAsc = table.getAttribute('data-sort-dir') !== 'asc';
+    table.setAttribute('data-sort-dir', isAsc ? 'asc' : 'desc');
+  
+    rows.sort((a, b) => {
+      const aText = a.children[columnIndex].innerText.trim().toLowerCase();
+      const bText = b.children[columnIndex].innerText.trim().toLowerCase();
+  
+      if (aText < bText) return isAsc ? -1 : 1;
+      if (aText > bText) return isAsc ? 1 : -1;
+      return 0;
+    });
+  
+    tbody.innerHTML = '';
+    rows.forEach(row => tbody.appendChild(row));
+  }
+</script>  
+{% endblock %}

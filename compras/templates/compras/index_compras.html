@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Inicio Compras - SIMAC{% endblock %}
+
+{% block content %}
+{% load static %}
+<style>
+  .card-hover:hover {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.2);
+    transform: translateY(-4px);
+    transition: all 0.2s ease-in-out;
+  }
+</style>
+
+<div class="container-fluid py-5">
+  <h1 class="mb-4 fw-bold">Compras</h1>
+  <p class="text-muted">Centro de control para proveedores, órdenes de compra y abastecimiento de inventario.</p>
+
+  <div class="row g-4 mt-4">
+
+    <!-- Card: Proveedores -->
+    <div class="col-md-3">
+      <div class="card rounded-5 card-hover text-center h-100">
+        <div class="card-body d-flex flex-column">
+          <i class="bx bx-user-voice bx-lg text-success mb-3"></i>
+          <h5 class="card-title">Proveedores</h5>
+          <p class="card-text flex-grow-1">Administra y consulta proveedores activos.</p>
+          <a href="{% url 'lista_proveedores' %}" class="btn btn-success rounded-5 mt-3">Ver proveedores</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Órdenes de Compra -->
+    <div class="col-md-3">
+      <div class="card rounded-5 card-hover text-center h-100">
+        <div class="card-body d-flex flex-column">
+          <i class="bx bx-cart-add bx-lg text-primary mb-3"></i>
+          <h5 class="card-title">Órdenes de Compra</h5>
+          <p class="card-text flex-grow-1">Crea y consulta órdenes de compra.</p>
+          <a href="{% url 'lista_ordenes_compra' %}" class="btn btn-primary rounded-5 mt-3">Ver órdenes</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Órdenes Pendientes -->
+    <div class="col-md-3">
+      <div class="card rounded-5 card-hover text-center h-100">
+        <div class="card-body d-flex flex-column">
+          <i class="bx bx-time bx-lg text-warning mb-3"></i>
+          <h5 class="card-title">Órdenes Pendientes</h5>
+          <p class="card-text flex-grow-1">Consulta órdenes pendientes de entrega.</p>
+          <a href="{% url 'ordenes_pendientes' %}" class="btn btn-warning rounded-5 mt-3">Ver pendientes</a>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+{% endblock %}

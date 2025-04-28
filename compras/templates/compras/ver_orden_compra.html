@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+  <h3>Orden de Compra #{{ orden.id }}</h3>
+  <p><strong>Proveedor:</strong> {{ orden.proveedor.nombre }}</p>
+  <p><strong>Fecha Emisión:</strong> {{ orden.fecha_emision }}</p>
+  <p><strong>Fecha Entrega Estimada:</strong> {{ orden.fecha_entrega_estimada }}</p>
+  <p><strong>Estado:</strong> {{ orden.get_estado_display }}</p>
+  <p><strong>Observaciones:</strong> {{ orden.observaciones|default:"-" }}</p>
+
+  <hr>
+
+  <h5>Productos Solicitados</h5>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>Descripción</th>
+        <th>Cantidad Pedida</th>
+        <th>Cantidad Recibida</th>
+        <th>Precio Unitario</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for detalle in detalles %}
+        <tr>
+          <td>{{ detalle.producto.sku }}</td>
+          <td>{{ detalle.producto.descripcion }}</td>
+          <td>{{ detalle.cantidad_pedida }}</td>
+          <td>{{ detalle.cantidad_recibida }}</td>
+          <td>${{ detalle.precio_unitario|floatformat:2 }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="mt-4">
+    {% if orden.estado != 'CERRADA' %}
+      <a href="{% url 'recepcion_productos' orden.id %}" class="btn btn-warning">Registrar Recepción</a>
+    {% endif %}
+    <a href="{% url 'lista_ordenes_compra' %}" class="btn btn-secondary ms-2">Volver</a>
+  </div>
+</div>
+{% endblock %}

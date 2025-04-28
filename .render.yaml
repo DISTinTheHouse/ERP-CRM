@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: erpcrm
+    env: python
+    plan: free
+    buildCommand: "./venv/Scripts/activate && pip install -r requirements.txt"
+    startCommand: "gunicorn erpcrm.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: erpcrm.settings
+      - key: PYTHON_VERSION
+        value: 3.12.1

@@ -9,3 +9,4 @@ pytz==2025.2
 six==1.17.0
 sqlparse==0.5.3
 tzdata==2025.2
+gunicorn==23.0.0

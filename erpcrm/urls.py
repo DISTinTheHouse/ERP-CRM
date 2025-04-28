@@ -25,4 +25,5 @@ urlpatterns = [
     path('', home_redirect),
     path('admin/', admin.site.urls),
     path('inventarios/', include('inventarios.urls')),
+    path('compras/', include('compras.urls')),
 ]

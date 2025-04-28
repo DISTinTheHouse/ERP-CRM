@@ -194,7 +194,7 @@ def control_inventario(request):
     })
 
 
-def cargar_productos_excel(request):
+def cargar_productos_excel(request): # materia prima
     if request.method == 'POST' and request.FILES.get('archivo_excel'):
         archivo = request.FILES['archivo_excel']
         fs = FileSystemStorage()

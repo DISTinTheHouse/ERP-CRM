@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+  <h3 class="fw-bold">Órdenes de Compra</h3>
+
+  <!-- Mensajes -->
+  <div id="mensajeSuccess"></div>
+
+  <!-- Botón para abrir modal -->
+  <div class="d-flex justify-content-end mb-3">
+    <button type="button" class="btn btn-primary rounded-5" data-bs-toggle="modal" data-bs-target="#nuevaOrdenModal">
+      <i class="bx bx-plus"></i> Nueva Orden de Compra
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-responsive">
+    <table class="table table-hover align-middle rounded-4 overflow-hidden shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Proveedor</th>
+          <th>Fecha Emisión</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaOrdenes">
+        {% for orden in ordenes %}
+          <tr>
+            <td>{{ orden.id }}</td>
+            <td>{{ orden.proveedor.nombre }}</td>
+            <td>{{ orden.fecha_emision|date:"d/m/Y" }}</td>
+            <td>{{ orden.get_estado_display }}</td>
+            <td>
+              <a href="{% url 'ver_orden_compra' orden.id %}" class="btn btn-sm btn-info">Ver</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="text-center text-muted">No hay órdenes registradas.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal: Nueva Orden -->
+<div class="modal fade" id="nuevaOrdenModal" tabindex="-1" aria-labelledby="nuevaOrdenModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content rounded-5">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nuevaOrdenModalLabel">Nueva Orden de Compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <form id="formNuevaOrden">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select name="proveedor" class="form-select" id="proveedorSelect" required>
+                  <option value="">Seleccione un proveedor</option>
+                  {% for proveedor in proveedores %}
+                    <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+                  {% endfor %}
+                </select>
+                <label for="proveedorSelect">Proveedor</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="date" name="fecha_entrega" class="form-control" id="fechaEntregaInput">
+                <label for="fechaEntregaInput">Fecha Estimada de Entrega</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea name="observaciones" class="form-control" placeholder="Observaciones" id="observacionesInput" style="height: 100px;"></textarea>
+                <label for="observacionesInput">Observaciones</label>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h5 class="fw-bold">Productos a Solicitar</h5>
+          <div id="productos" class="row g-3 align-items-end mt-2">
+            <div class="col-md-5">
+              <div class="form-floating">
+                <select name="producto_id" class="form-select">
+                  <option value="">Seleccione un producto</option>
+                  {% for producto in productos %}
+                    <option value="{{ producto.id }}">{{ producto.sku }} - {{ producto.descripcion }}</option>
+                  {% endfor %}
+                </select>
+                <label>Producto</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-floating">
+                <input type="number" name="cantidad" class="form-control" placeholder="Cantidad">
+                <label>Cantidad</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="number" step="0.01" name="precio_unitario" class="form-control" placeholder="Precio unitario">
+                <label>Precio Unitario</label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger rounded-5 me-2" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success rounded-5">Guardar Orden</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Script AJAX -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('formNuevaOrden');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    fetch("{% url 'crear_orden_compra' %}", {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const mensajeSuccess = document.getElementById('mensajeSuccess');
+        mensajeSuccess.innerHTML = `
+          <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            ${data.message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+          </div>
+        `;
+        document.getElementById('nuevaOrdenModal').querySelector('.btn-close').click();
+        setTimeout(() => window.location.reload(), 800); // Refrescar para ver nuevas ordenes
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  });
+});
+</script>
+{% endblock %}
