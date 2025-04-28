@@ -9,20 +9,20 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ---
 
-### 1. Almacenes / Inventarios
+### ✅ 1. Almacenes / Inventarios
 
 #### Módulos:
-- **Inventario MP (Materia Prima)**
-- **Inventario PT (Producto Terminado)**
+- ✅ **Inventario MP (Materia Prima)**
+- ✅ **Inventario PT (Producto Terminado)**
 
 #### Funcionalidad:
-- Registro de productos (SKU, nombre, categoría)
-- Ubicaciones físicas dentro del almacén (multi-almacén opcional)
-- Stock actual, mínimo requerido y niveles de alerta
-- Entradas y salidas por movimiento (manual o automático)
+- ✅ Registro de productos (SKU, nombre, categoría)
+- ✅ Ubicaciones físicas dentro del almacén (multi-almacén opcional)
+- ✅ Stock actual, mínimo requerido y niveles de alerta
+- ✅ Entradas y salidas por movimiento (manual o automático)
 
 #### Integración:
-- **SDK para impresoras RFID**: Impresión y escaneo de etiquetas para trazabilidad
+- 🕓 **SDK para impresoras RFID**: Impresión y escaneo de etiquetas para trazabilidad
 
 #### Justificación:
 - Es el eje central del sistema. Todo lo demás depende de tener un inventario confiable.
@@ -30,13 +30,13 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ---
 
-### 2. Compras
+### ✅ 2. Compras
 
 #### Funcionalidad:
-- Creación de órdenes de compra
-- Relación con proveedores
-- Registro de entradas a inventario al recibir materiales
-- Control de pendientes de entrega y fechas esperadas
+- ✅ Creación de órdenes de compra
+- ✅ Relación con proveedores
+- ✅ Registro de entradas a inventario al recibir materiales
+- ✅ Control de pendientes de entrega y fechas esperadas
 
 #### Justificación:
 - Es el origen del flujo de abastecimiento. Todo ingreso de materia prima inicia aquí.
@@ -44,7 +44,7 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ---
 
-### 3. Producción
+### 🕓 3. Producción
 
 #### Funcionalidad:
 - Generación de órdenes de producción
@@ -60,7 +60,7 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ## 🛒 ETAPA 2: Flujo Comercial
 
-### 4. Ventas
+### 🕓 4. Ventas
 
 #### Funcionalidad:
 - Registro de pedidos y cotizaciones
@@ -75,7 +75,7 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ---
 
-### 5. Cuentas por cobrar / pagar
+### 🕓 5. Cuentas por cobrar / pagar
 
 #### Funcionalidad:
 - Registro de facturas pendientes por cobrar (clientes)
@@ -90,7 +90,7 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ## 🗒️ ETAPA 3: Contabilidad y Timbrado Fiscal
 
-### 6. Contabilidad (Integración final)
+### 🕓 6. Contabilidad (Integración final)
 
 #### Funcionalidad:
 - Registro contable automatizado desde movimientos (ventas, compras, bancos)
@@ -102,7 +102,7 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 ---
 
-### 7. Facturación Timbrada (SAT / CFDI 4.0)
+### 🕓 7. Facturación Timbrada (SAT / CFDI 4.0)
 
 #### Funcionalidad:
 - Emisión de facturas electrónicas CFDI 4.0
@@ -122,8 +122,6 @@ Construir la base funcional del sistema que mueve las operaciones internas del n
 
 **Desarrollado por el equipo de sistemas — Abril 2025.**
 
-<<<<<<< HEAD
-=======
 SIMAC = Sistema Integral de Maquila y Control
 
 ⚠️ Licencia y uso restringido
@@ -139,5 +137,3 @@ Usar este código como base para otros proyectos ERP o CRM sin licencia expresa.
 Vender, sublicenciar o explotar comercialmente este formato de forma parcial o total.
 
 El uso no autorizado de este software podrá ser sancionado conforme a las leyes locales e internacionales sobre propiedad intelectual y uso indebido de software.
-
->>>>>>> 1b2bb52 (Primer push del sistema ERP/CRM SIMAC con control de inventarios)
