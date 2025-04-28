@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-
-{% block content %}
 {% load custom_filters %}
 
+{% block content %}
 <div class="container mt-4">
   <h3 class="mb-3">{{ producto.descripcion }}</h3>
 
@@ -10,8 +9,53 @@
     <p><strong>SKU:</strong> {{ producto.sku }}</p>
     <p><strong>Clasificación:</strong> {{ producto.clasificacion|default:"No clasificado" }}</p>
     <p><strong>Tipo:</strong> {{ producto.get_tipo_display|default:"Sin tipo" }}</p>
-    <p><strong>Stock Actual en Sistema:</strong> {{ producto.stock_actual }}</p>
+
+    {# Calcular el stock total basado en movimientos #}
+    {% with total_stock=0 %}
+      {% for almacen in stock_por_almacen %}
+        {% with total_stock=total_stock|add:almacen.total %}
+        {% endwith %}
+      {% endfor %}
+    {% endwith %}
+
+    <p>
+      <strong>Stock Actual en Sistema:</strong> {{ producto.stock_actual }}
+      {% if total_stock != producto.stock_actual %}
+        <span class="badge bg-danger ms-2">⚠️ Inconsistencia detectada</span>
+      {% else %}
+        <span class="badge bg-success ms-2">✔️ Stock consistente</span>
+      {% endif %}
+    </p>
   </div>
+
+  <hr>
+
+  <h5>Stock Actual por Almacén</h5>
+
+  {% if stock_por_almacen %}
+    <table class="table table-striped mt-3">
+      <thead class="table-light">
+        <tr>
+          <th>Código de Almacén</th>
+          <th>Nombre del Almacén</th>
+          <th>Stock Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for almacen in stock_por_almacen %}
+          <tr>
+            <td>{{ almacen.almacen__codigo|default:"-" }}</td>
+            <td>{{ almacen.almacen__nombre|default:"-" }}</td>
+            <td>{{ almacen.total|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info mt-3">
+      No hay movimientos registrados para calcular stock por almacén.
+    </div>
+  {% endif %}
 
   <hr>
 
@@ -40,15 +84,9 @@
         {% endfor %}
       </tbody>
     </table>
-
-    <div class="mt-4">
-      <p><strong>Existencia basada en movimientos:</strong> 
-      {{ movimientos|sum_movimientos }}</p>
-    </div>
-
   {% else %}
-    <div class="alert alert-info">
-      No hay movimientos de inventario registrados para este producto.
+    <div class="alert alert-info mt-3">
+      No hay movimientos registrados para este producto.
     </div>
   {% endif %}
 </div>
