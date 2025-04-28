@@ -1,13 +1,42 @@
+# =========================================================
+# Render.yaml para deploy de ERP/CRM SIMAC
+# Configuración optimizada para producción con Django + WhiteNoise
+# =========================================================
+
 services:
   - type: web
     name: erpcrm
     env: python
-    plan: free
+    plan: free  # Puedes escalar a Starter o Pro en cualquier momento
     buildCommand: |
+      # 1. Instalar dependencias
       pip install -r requirements.txt
+      # 2. Aplicar migraciones (base de datos lista)
+      python manage.py migrate --noinput
+      # 3. Generar archivos estáticos para WhiteNoise
+      python manage.py collectstatic --noinput
     startCommand: gunicorn erpcrm.wsgi:application
+
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: erpcrm.settings
       - key: PYTHON_VERSION
         value: 3.12.1
+      - key: SECRET_KEY
+        value: TuSuperClaveUltraSecreta123  # (⚡ Opcional si quieres ocultar tu SECRET_KEY real aquí)
+
+# =========================================================
+# ¿Qué hace cada parte?
+#
+# buildCommand:
+#  - pip install: instala Django y librerías como WhiteNoise
+#  - migrate: aplica migraciones automáticamente en Render
+#  - collectstatic: mueve CSS, JS, imágenes a /staticfiles para producción
+#
+# startCommand:
+#  - gunicorn: levanta Django en modo servidor profesional WSGI
+#
+# envVars:
+#  - Configura las variables de entorno para que Django sepa dónde están sus settings
+#
+# =========================================================
